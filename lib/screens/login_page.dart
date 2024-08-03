@@ -1,20 +1,41 @@
+
+
 import 'package:flutter/material.dart';
+import 'package:app_packdelivery/screens/home_page.dart';
 import 'package:app_packdelivery/components/my_button.dart';
 import 'package:app_packdelivery/components/my_textfield.dart';
 import 'package:app_packdelivery/components/square_tile.dart';
+import 'package:app_packdelivery/data/helpers/ApiService.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class LoginPage extends StatelessWidget{
-  LoginPage({super.key});
-  final userNameController= TextEditingController();
-  final passwordController= TextEditingController();
+class LoginPage extends StatefulWidget{
+   LoginPage({super.key});
 
-  void signUserIn(){
+  State<LoginPage> createState()=> _LoginPageState();}
+
+class _LoginPageState extends State<LoginPage>{
+
+  final _formKey = GlobalKey<FormState>();
+  final _usernameController= TextEditingController();
+  final _passwordController= TextEditingController();
+  final ApiService _apiService = ApiService();
+
+  Future<bool>? _loginFuture;
+  void _initiateLogin() {
+   // if (_formKey.currentState!.validate()) {
+      setState(() {
+        _loginFuture = _apiService.login(
+          _usernameController.text,
+          _passwordController.text,
+        );
+      });
+   // }
   }
-
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     //throw UnimplementedError();
     return Scaffold(
         backgroundColor: Colors.grey[300],
@@ -28,28 +49,28 @@ class LoginPage extends StatelessWidget{
                   const SizedBox(height: 40),
                   // logo
                   const Icon(
-                    Icons.lock,
+                    Icons.fire_truck,
                     size: 100,
                   ),
                   const SizedBox(height: 40),
                   // welcome back, you've  been missed
                   Text(
-                    'Welcome back you\'ve been missed',
+                    'LogiBOl',
                     style: TextStyle(
                         color: Colors.grey[700],
-                        fontSize: 16
+                        fontSize: 20
                     ),
 
                   ),
                   const SizedBox(height: 25),
                   // username textfield
                   MyTextfield(
-                    controller: userNameController, hintText: 'username', obscureText: false,
+                    controller: _usernameController, hintText: 'username', obscureText: false,
                   ),
                   const SizedBox(height: 10),
                   // password textfield
                   MyTextfield(
-                    controller: passwordController, hintText: 'password', obscureText: true,
+                    controller: _passwordController, hintText: 'password', obscureText: false,
                   ),
                   const SizedBox(height: 10),
                   // forgot password?
@@ -67,7 +88,29 @@ class LoginPage extends StatelessWidget{
                   ),
                   const SizedBox(height: 25),
                   // sign in button
-                  MyButton(onTap: signUserIn,),
+                  MyButton( onTap:_initiateLogin ),
+
+                  if (_loginFuture != null)
+                    FutureBuilder<bool>(
+                      future: _loginFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else if (snapshot.data == true) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(builder: (context) => HomePage()),
+                            );
+                          });
+                          return SizedBox.shrink();
+                        } else {
+                          return Text('Credenciales inválidas');
+                        }
+                      },
+                    ),
+
                   const SizedBox(height: 40),
                   // or continue with
                   Padding(
@@ -94,18 +137,18 @@ class LoginPage extends StatelessWidget{
 
                   const  SizedBox(height: 35),
                   // google + apple  sign in button
-                 // Expanded(
-                 //  child: Row(
-                 //    mainAxisAlignment: MainAxisAlignment.center,
-                 //    children: const [
-                 //      // google button
-                 //      SquareTile(imagePath:'images/google.png'),
-                 //      SizedBox(width: 10),
-                 //      // apple button
-                 //      SquareTile(imagePath:'images/apple.png'),
-                 //    ],
-                 //  ),
-                 //),
+                  // Expanded(
+                  //  child: Row(
+                  //    mainAxisAlignment: MainAxisAlignment.center,
+                  //    children: const [
+                  //      // google button
+                  //      SquareTile(imagePath:'images/google.png'),
+                  //      SizedBox(width: 10),
+                  //      // apple button
+                  //      SquareTile(imagePath:'images/apple.png'),
+                  //    ],
+                  //  ),
+                  //),
                   const  SizedBox(height: 30),
                   // not a member register now
                   Expanded(
@@ -131,4 +174,14 @@ class LoginPage extends StatelessWidget{
         )
 
     );
-  }}
+
+
+  }
+
+
+
+
+
+
+
+}
