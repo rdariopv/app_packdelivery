@@ -7,12 +7,6 @@ class ApiService {
 
 
   Future<bool> login(String username, String password) async {
-    const Map<String, String> header = {
-      'Content-type': 'application/json',
-      'Accept': 'application/json',
-    };
-
-
     final response = await http.post(
       Uri.parse('$baseUrl/login'),
       headers: <String, String>{
@@ -32,4 +26,5 @@ class ApiService {
       throw Exception('Error en el inicio de sesión');
     }
   }
+
 }

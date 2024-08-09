@@ -1,10 +1,18 @@
+import 'package:app_packdelivery/controller/auth_provider.dart';
+import 'package:app_packdelivery/screens/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:app_packdelivery/screens/login_page.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(MaterialApp(
-  title: "App",
-  home: MyApp(),
-));
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => AuthProvider(),
+      child: MyApp(),
+    ),
+  );
+}
+//void main() => runApp(MaterialApp(title: "App",  home: MyApp(),));
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -20,39 +28,12 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       //home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: AuthWrapper(),
-    );
-  }
-}
 
-class AuthWrapper extends StatelessWidget {
-  Future<bool> checkAuthStatus() async {
-    // Simula una verificación de autenticación
-    await Future.delayed(Duration(seconds: 2)); // Simula un retraso
-    bool isAuthenticated = false; // Cambia esto según tu lógica de autenticación
-    return isAuthenticated;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: checkAuthStatus(),
-      builder: (context, snapshot) {
-        // Muestra un indicador de carga mientras se realiza la verificación
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        } else if (snapshot.hasError) {
-          return Scaffold(
-            body: Center(child: Text('Error: ${snapshot.error}')),
-          );
-        } else if (snapshot.data == true) {
-          return MyHomePage(title: 'Flutter Demo Home Page chaged ');
-        } else {
-          return LoginPage();
-        }
-      },
+      home: Consumer<AuthProvider>(
+        builder: (context, authProvider, child) {
+          return authProvider.isAuthenticated ? HomePage() : LoginPage();
+        },
+      ),
     );
   }
 }

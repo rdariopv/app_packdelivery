@@ -1,13 +1,16 @@
 
 
+import 'package:app_packdelivery/controller/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:app_packdelivery/screens/home_page.dart';
 import 'package:app_packdelivery/components/my_button.dart';
 import 'package:app_packdelivery/components/my_textfield.dart';
 import 'package:app_packdelivery/components/square_tile.dart';
-import 'package:app_packdelivery/data/helpers/ApiService.dart';
+import 'package:app_packdelivery/controller/api_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget{
    LoginPage({super.key});
@@ -29,8 +32,46 @@ class _LoginPageState extends State<LoginPage>{
           _usernameController.text,
           _passwordController.text,
         );
+
+
+
       });
-   // }
+
+
+
+  }
+
+  bool _isLoading = false;
+  String _errorMessage = '';
+  Future<void> _login() async {
+    final username = _usernameController.text;
+    final password = _passwordController.text;
+
+    setState(() {
+      _isLoading = true;
+      _errorMessage = '';
+    });
+
+    try {
+     bool result=  await Provider.of<AuthProvider>(context, listen: false)
+          .login(username, password);
+      // Al iniciar sesión con éxito, la vista se actualizará automáticamente
+        //if(result){
+        //    WidgetsBinding.instance.addPostFrameCallback((_) {
+        //      Navigator.of(context).pushReplacement(
+        //        MaterialPageRoute(builder: (context) => HomePage()),
+        //      );
+        //    });
+        //}
+    } catch (error) {
+      setState(() {
+        _errorMessage = 'Usuario o contraseña incorrectos';
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -55,7 +96,7 @@ class _LoginPageState extends State<LoginPage>{
                   const SizedBox(height: 40),
                   // welcome back, you've  been missed
                   Text(
-                    'LogiBOl',
+                    'LogiBOL',
                     style: TextStyle(
                         color: Colors.grey[700],
                         fontSize: 20
@@ -88,28 +129,44 @@ class _LoginPageState extends State<LoginPage>{
                   ),
                   const SizedBox(height: 25),
                   // sign in button
-                  MyButton( onTap:_initiateLogin ),
+               //   MyButton( onTap:_initiateLogin ),
 
-                  if (_loginFuture != null)
-                    FutureBuilder<bool>(
-                      future: _loginFuture,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return CircularProgressIndicator();
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else if (snapshot.data == true) {
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) => HomePage()),
-                            );
-                          });
-                          return SizedBox.shrink();
-                        } else {
-                          return Text('Credenciales inválidas');
-                        }
-                      },
+                  _isLoading
+                      ? CircularProgressIndicator()
+                      : MyButton(
+                    onTap: _login,
+                  ),
+                  if (_errorMessage.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: Text(
+                        _errorMessage,
+                        style: TextStyle(color: Colors.red),
+                      ),
                     ),
+
+
+                  //if (_loginFuture != null)
+                  //  FutureBuilder<bool>(
+                  //    future: _loginFuture,
+                  //    builder: (context, snapshot) {
+                  //      if (snapshot.connectionState == ConnectionState.waiting) {
+                  //        return CircularProgressIndicator();
+                  //      } else if (snapshot.hasError) {
+                  //        return Text('Error: ${snapshot.error}');
+                  //      } else if (snapshot.data == true) {
+                  //        WidgetsBinding.instance.addPostFrameCallback((_) {
+//
+                  //          Navigator.of(context).pushReplacement(
+                  //            MaterialPageRoute(builder: (context) => HomePage()),
+                  //          );
+                  //        });
+                  //        return SizedBox.shrink();
+                  //      } else {
+                  //        return Text('Credenciales inválidas');
+                  //      }
+                  //    },
+                  //  ),
 
                   const SizedBox(height: 40),
                   // or continue with
