@@ -13,6 +13,7 @@ class AuthProvider extends ChangeNotifier {
   UserChoferApp? get user => _user;
   bool get isAuthenticated => _user != null;
 
+
   static const String baseUrl = 'https://docker-php-test.onrender.com';
 
   Future<bool> login(String username, String password) async {

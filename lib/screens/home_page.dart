@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
+import 'list_pack_page.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -39,7 +41,7 @@ class _HomePageState extends State<HomePage> {
   // page to display
   final List<Widget> _pages = [
     // shop page
-    const DeliveryPage(),
+    const ListPackPage(),
 
     // cart page
     //const CartPages(),

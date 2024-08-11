@@ -1,13 +1,24 @@
 import 'package:app_packdelivery/controller/auth_provider.dart';
+import 'package:app_packdelivery/controller/list_provider.dart';
 import 'package:app_packdelivery/screens/home_page.dart';
+import 'package:app_packdelivery/screens/list_pack_page.dart';
 import 'package:flutter/material.dart';
 import 'package:app_packdelivery/screens/login_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => AuthProvider(),
+    MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => AuthProvider()),
+          ChangeNotifierProxyProvider<AuthProvider, ListProvider>(
+            create: (context) => ListProvider(),
+            update: (context, authProvider, listProvider) {
+              listProvider?.setToken(authProvider.user?.apiToken);
+              return listProvider!;
+            },
+          ),
+        ],
       child: MyApp(),
     ),
   );
