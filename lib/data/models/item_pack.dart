@@ -18,6 +18,7 @@ class ItemPack {
   final String? desc_placa;
   final int? id_tramo;
   final String? desc_tramo;
+  final String? image;
 
   ItemPack({
     this.id_orden,
@@ -39,6 +40,7 @@ class ItemPack {
     this.desc_placa,
     this.id_tramo,
     this.desc_tramo,
+    this.image,
   });
 
   factory ItemPack.fromJson(Map<String, dynamic> json) {
@@ -62,6 +64,7 @@ class ItemPack {
       desc_placa: json['desc_placa'],
       id_tramo: json['id_tramo'],
       desc_tramo: json['desc_tramo'],
+      image: null,
     );
   }
 
