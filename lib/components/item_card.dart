@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../data/models/item_pack.dart';
 import 'package:flutter/material.dart';
 
+import '../screens/map_page.dart';
+
 // Asegúrate de que tu modelo ItemPack está importado
 // import 'item_pack.dart';
 
@@ -53,6 +55,7 @@ class ItemCard extends StatelessWidget {
     return Card(
       margin: EdgeInsets.all(8.0),
       elevation: 5.0,
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -60,7 +63,7 @@ class ItemCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              item.nro_carga ?? 'No Carga',
+              '${item.nro_carga ?? 'No Carga'}',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
@@ -103,13 +106,55 @@ class ItemCard extends StatelessWidget {
           // Botón para cambiar el estado
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Align(
+            child:
+            //Row(
+//
+            //  mainAxisSize: MainAxisSize.min, // Ensure buttons take only the space they need
+            //  mainAxisAlignment: MainAxisAlignment.end,
+            //  children: [
+            //    ElevatedButton(
+            //      onPressed: () {
+            //        // Handle button 1 press
+            //      },
+            //      child: Text('Button 1'),
+            //    ),
+            //    SizedBox(width: 8), // Spacing between buttons
+            //    ElevatedButton(
+            //      onPressed: () {
+            //        // Handle button 2 press
+            //      },
+            //      child: Text('Button 2'),
+            //    ),
+            //  ],
+            //),
+            Align(
               alignment: Alignment.centerRight,
-              child: ElevatedButton(
-                onPressed:() => _showChangeStateDialog(context),
-                child: Text('Cambiar Estado'),
-              ),
-            )
+              child:
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    //onPressed: () => _showChangeStateDialog(context),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MapPage()),
+                      );
+                    },
+                    child: Text('Ubicación'),
+                  ),
+                  SizedBox(width: 8), // Spacing between buttons
+                  ElevatedButton(
+                    onPressed: () => _showChangeStateDialog(context),
+                    child: Text('Cambiar Estado'),
+                  ),
+
+              ],),
+             // ElevatedButton(
+             //   onPressed:() => _showChangeStateDialog(context),
+             //   child: Text('Cambiar Estado'),
+             // ),
+            ),
           ),
         ],
       ),

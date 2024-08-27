@@ -1,6 +1,6 @@
 class ItemPack {
   final int? id_orden;
-  final String? nro_carga;
+  final int? nro_carga;
   final String? nro_factura;
   final DateTime? fecha_orden;
   final int? id_estado;

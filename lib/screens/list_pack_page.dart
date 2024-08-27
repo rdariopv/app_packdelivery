@@ -21,6 +21,11 @@ class _ListPackPage extends State<ListPackPage> {
     // Lógica para cambiar el estado del item
     // Esto podría implicar actualizar el estado en la API o localmente
     print('Cambiar estado para el item ${item.nro_carga} a estado $newStateId');
+    //Provider.of<ListProvider>(context, listen: false).setState(item.id_orden??0, newStateId).then((_) {
+    //  setState(() {
+    //    _isLoaded = true;
+    //  });
+    //});
   }
 
 
@@ -64,7 +69,9 @@ class _ListPackPage extends State<ListPackPage> {
               return ItemCard(
                 item: item,
                 onChangeState: (item, newStateId) {
+
                   changeItemState(item, newStateId);
+
                   // Actualiza la lista de items si es necesario
                 },
               );

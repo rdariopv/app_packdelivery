@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'list_pack_page.dart';
+import 'map_page.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -42,6 +43,8 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     // shop page
     const ListPackPage(),
+
+    const MapPage(),
 
     // cart page
     //const CartPages(),
@@ -126,6 +129,14 @@ class _HomePageState extends State<HomePage> {
               onTap: () => {
               //  navigateBottomBar(1),
               //  Navigator.pop(context),
+              },
+            ),
+            MyListTile(
+              text: "ver en mapa",
+              icon: Icons.map,
+              onTap: () => {
+                  navigateBottomBar(1),
+                  Navigator.pop(context),
               },
             ),
             MyListTile(

@@ -14,11 +14,12 @@ class AuthProvider extends ChangeNotifier {
   bool get isAuthenticated => _user != null;
 
 
-  static const String baseUrl = 'https://docker-php-test.onrender.com';
+ // static const String baseUrl = 'https://docker-php-test.onrender.com';
 
   Future<bool> login(String username, String password) async {
+    String urllocal="https://logibol.sistemasamedida.online/order-api/public/usuario";
     final response = await http.post(
-      Uri.parse('$baseUrl/login'),
+      Uri.parse(urllocal),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

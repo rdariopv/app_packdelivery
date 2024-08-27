@@ -81,10 +81,8 @@ class _LoginPageState extends State<LoginPage>{
     return Scaffold(
         backgroundColor: Colors.grey[300],
         body:SafeArea(
-
           child: Center(
               child: Column(
-
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 40),
