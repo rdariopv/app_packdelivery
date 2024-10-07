@@ -41,6 +41,7 @@ dependencies:
   shared_preferences: ^2.0.16  # Asegúrate de usar la última versión disponible
   http: ^0.13.4
   google_maps_flutter: ^2.6.1
+  geolocator: ^9.0.2  # Para obtener la ubicación actual del dispositivo
 
 dev_dependencies:
   flutter_test:

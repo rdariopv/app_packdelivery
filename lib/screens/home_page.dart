@@ -4,8 +4,10 @@ import 'package:app_packdelivery/controller/auth_provider.dart';
 import 'package:app_packdelivery/screens/delivery_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../data/models/item_pack.dart';
 import 'list_pack_page.dart';
 import 'map_page.dart';
 
@@ -18,18 +20,27 @@ class HomePage extends StatefulWidget {
 }
 
 
-class _HomePageState extends State<HomePage> {
+ class _HomePageState extends State<HomePage> {
 // this select index is to control the bottom nav bar
   int _selectedIndex = 0;
-
+  bool _showMap = false;
+  ItemPack _selectedItem = new ItemPack(); // Ubicación por defecto (San Francisco)
   // this method will update our selected index
   // when the user taps on the bottom bar
   void navigateBottomBar(int index) {
     setState(() {
       _selectedIndex = index;
+      _showMap=false;
     });
   }
 
+  void onItemSelected(ItemPack item){
+    setState(() {
+      _selectedItem = item;
+      _selectedIndex = 1; // Cambiar al índice del mapa
+    });
+
+  }
 
 
  // @override
@@ -44,7 +55,7 @@ class _HomePageState extends State<HomePage> {
     // shop page
     const ListPackPage(),
 
-    const MapPage(),
+     MapPage(itemPack: new ItemPack()),
 
     // cart page
     //const CartPages(),
@@ -55,9 +66,6 @@ class _HomePageState extends State<HomePage> {
     final authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       backgroundColor: Colors.grey[300],
-     // bottomNavigationBar: MyBottomNavBar(
-     //   onTabChange: (index) => navigateBottomBar(index),
-     // ),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -150,9 +158,24 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: _pages[_selectedIndex],
+     body: IndexedStack(
+       index: _selectedIndex,
+       children: [
+         _pages[_selectedIndex],
+         MapPage(itemPack: _selectedItem)
+       ],
+     ),
+     // body:  _showMap ? MapPage(itemPack: _selectedItem) :  _pages[_selectedIndex],
     );
   }
 
+
+  // Cambiar a la vista del mapa y actualizar la ubicación seleccionada
+  void showMap(ItemPack itemselected) {
+    setState(() {
+      _showMap = true;
+      _selectedItem = itemselected; // Pasar la ubicación seleccionada al mapa
+    });
+  }
 
 }

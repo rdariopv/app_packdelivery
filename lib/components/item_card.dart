@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../data/models/item_pack.dart';
 import 'package:flutter/material.dart';
 
+import '../screens/home_page.dart';
 import '../screens/map_page.dart';
 
 // Asegúrate de que tu modelo ItemPack está importado
@@ -136,9 +137,14 @@ class ItemCard extends StatelessWidget {
                   ElevatedButton(
                     //onPressed: () => _showChangeStateDialog(context),
                     onPressed: () {
+
+                      // Obtener el estado de BottomNavBarExample y pasar la ubicación seleccionada
+                     // final parentState = context.findAncestorStateOfType<_HomePageState>();
+
+
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MapPage()),
+                        MaterialPageRoute(builder: (context) => MapPage(itemPack: item,)),
                       );
                     },
                     child: Text('Ubicación'),

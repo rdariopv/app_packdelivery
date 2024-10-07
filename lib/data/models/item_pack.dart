@@ -20,6 +20,10 @@ class ItemPack {
   final String? desc_tramo;
   final String? image;
 
+  final String? latitud;
+  final String? longitud;
+
+
   ItemPack({
     this.id_orden,
     this.nro_carga,
@@ -41,6 +45,8 @@ class ItemPack {
     this.id_tramo,
     this.desc_tramo,
     this.image,
+    this.latitud,
+    this.longitud
   });
 
   factory ItemPack.fromJson(Map<String, dynamic> json) {
@@ -65,6 +71,8 @@ class ItemPack {
       id_tramo: json['id_tramo'],
       desc_tramo: json['desc_tramo'],
       image: null,
+      latitud: json['latitud'],
+      longitud: json['longitud'],
     );
   }
 
@@ -91,6 +99,8 @@ class ItemPack {
       'desc_placa': desc_placa,
       'id_tramo': id_tramo,
       'desc_tramo': desc_tramo,
+      'latitud': latitud,
+      'longitud': longitud,
     };
   }
 }
